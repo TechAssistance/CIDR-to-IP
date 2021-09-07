@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash    
 
 prefix_to_bit_netmask() {
     prefix=$1;
@@ -52,20 +52,28 @@ getopts "fibh" force;
 shift $((OPTIND-1))
 if [ $force = 'h' ]; then
     echo ""
-    echo -e "THIS SCRIPT WILL EXPAND A CIDR ADDRESS.\n\nSYNOPSIS\n  ./cidr-to-ip.sh [OPTION(only one)] [STRING/FILENAME]\nDESCRIPTION\n -h  Displays this help screen\n -f  Forces a check for network boundary when given a STRING(s)\n    -i  Will read from an Input file (no network boundary check)\n  -b  Will do the same as –i but with network boundary check\n\nEXAMPLES\n    ./cidr-to-ip.sh  192.168.0.1/24\n   ./cidr-to-ip.sh  192.168.0.1/24 10.10.0.0/28\n  ./cidr-to-ip.sh  -f 192.168.0.0/16\n    ./cidr-to-ip.sh  -i inputfile.txt\n ./cidr-to-ip.sh  -b inputfile.txt\n"
+    echo "THIS SCRIPT WILL EXPAND A CIDR ADDRESS." 
+    echo "cidrip [OPTION(only one)] [STRING/FILENAME]"
+    echo ""
+    echo "OPTIONS:"
+    echo "-h  Displays this help screen"
+    echo "-f  Forces a check for network boundary when given a STRING(s)"    
+    echo "-i  Will read from an Input file (no network boundary check)"
+    echo "-b  Will do the same as –i but with network boundary check"
+    echo ""
     exit
 fi
 
-#stdin compatibility 
 if [ -p /dev/stdin ]; then
+        echo "Data was piped to this script!"
         old_IPS=$IFS
-        while IFS= read line; do
-                lines+=(${line})
-                echo ${line}
-        done
-        IFS=$old_IPS
-        else
-                lines=$@
+	while IFS= read line; do
+		lines+=(${line})
+		echo ${line}
+	done
+	IFS=$old_IPS
+	else
+		lines=$@
 fi
 
 
@@ -97,7 +105,7 @@ for ip in ${lines[@]}; do
         else
             do_processing=0;
         fi
-    fi
+    fi  
 
     if [ $do_processing -eq 1 ]; then
         str=
@@ -117,4 +125,3 @@ exit
     fi
 
 done
-
