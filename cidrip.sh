@@ -1,4 +1,4 @@
-#!/bin/bash    
+#!/bin/bash
 
 prefix_to_bit_netmask() {
     prefix=$1;
@@ -56,6 +56,19 @@ if [ $force = 'h' ]; then
     exit
 fi
 
+#stdin compatibility 
+if [ -p /dev/stdin ]; then
+        old_IPS=$IFS
+        while IFS= read line; do
+                lines+=(${line})
+                echo ${line}
+        done
+        IFS=$old_IPS
+        else
+                lines=$@
+fi
+
+
 if [ $force = 'i' ] || [ $force = 'b' ]; then
 
     old_IPS=$IPS
@@ -84,7 +97,7 @@ for ip in ${lines[@]}; do
         else
             do_processing=0;
         fi
-    fi  
+    fi
 
     if [ $do_processing -eq 1 ]; then
         str=
@@ -104,3 +117,4 @@ exit
     fi
 
 done
+
