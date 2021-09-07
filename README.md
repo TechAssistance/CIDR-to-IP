@@ -29,8 +29,9 @@ cidrip.sh -b inputfile.txt
 
 cat listofcidr.txt | cidrip
 
-
-Credits:
+#### Credits:
 Mayberoot
+
 Special thanks to TAO
+
 OG script by @scherand
